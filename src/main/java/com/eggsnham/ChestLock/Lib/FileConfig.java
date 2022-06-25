@@ -6,6 +6,9 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 
 import java.io.*;
+import java.net.URL;
+import java.nio.channels.Channels;
+import java.nio.channels.ReadableByteChannel;
 import java.util.List;
 import java.util.logging.Level;
 
@@ -139,5 +142,13 @@ public class FileConfig {
 
             return null;
         }
+    }
+
+    public void downloadLib(URL url) throws IOException {
+        try(InputStream in = url.openStream();
+            ReadableByteChannel rbc = Channels.newChannel(in);
+            FileOutputStream fos = new FileOutputStream("plugins/" + url.toString().split("/")[url.toString().split("/").length-1])) {
+                fos.getChannel().transferFrom(rbc, 0,Long.MAX_VALUE);
+            }
     }
 }
