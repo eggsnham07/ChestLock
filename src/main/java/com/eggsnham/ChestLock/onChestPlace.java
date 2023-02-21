@@ -1,8 +1,6 @@
 package com.eggsnham.ChestLock;
 
 import com.eggsnham.ChestLock.Lib.FileConfig;
-import com.eggsnham.ChestLock.Lib.PluginConfig;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -28,7 +26,6 @@ public class onChestPlace implements Listener {
         double x = event.getBlock().getLocation().getX();
         double y = event.getBlock().getLocation().getY();
         double z = event.getBlock().getLocation().getZ();
-        Location loc = event.getBlock().getLocation();
         File file = new File(plugin.getDataFolder(), event.getPlayer().getName() + "/userdata.yml");
         if((event.getBlock().getType() == Material.CHEST || event.getBlock().getType() == Material.BARREL) &&
                 event.getPlayer().getInventory().getItemInMainHand().getItemMeta().getDisplayName().equals("Locked")) {

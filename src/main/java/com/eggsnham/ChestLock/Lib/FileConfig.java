@@ -49,7 +49,7 @@ public class FileConfig {
             while((str = br.readLine()) != null) {
                 returnedString += str;
             }
-
+            br.close();
             return returnedString;
         } catch(Exception ex) {
             plugin.getLogger().log(Level.SEVERE, String.valueOf(ex));

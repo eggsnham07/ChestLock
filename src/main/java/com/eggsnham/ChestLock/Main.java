@@ -1,19 +1,20 @@
 package com.eggsnham.ChestLock;
 
-import com.eggsnham.ChestLock.Lib.FileConfig;
-import com.eggsnham.ChestLock.Lib.System;
-import com.eggsnham.DebugLevel;
-import com.eggsnham.DebugLogger;
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.util.logging.Level;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
-import java.util.logging.Level;
+import com.eggsnham.DebugLevel;
+import com.eggsnham.DebugLogger;
+import com.eggsnham.ChestLock.Lib.FileConfig;
+import com.eggsnham.ChestLock.Lib.System;
 
 public class Main extends JavaPlugin
 {
@@ -26,7 +27,7 @@ public class Main extends JavaPlugin
         if(!new File("plugins/DebugLib.jar").exists()) {
             try {
                 //Download DebugLib.jar
-                fileConfig.downloadLib(new URL("https://git.eggsnham.com/content/DebugLib/latest/DebugLib.jar"));
+                fileConfig.downloadLib(new URL("https://github.com/eggsns-plugins/BukkitDebugLibrary/releases/download/0.0.4-SNAPSHOT/DebugLib.jar"));
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -45,7 +46,7 @@ public class Main extends JavaPlugin
 
         try {
             //Try to set the logger variable and go to catch block if fails
-            logger = new DebugLogger(new File(getDataFolder() + "/debug.log"));
+            logger = new DebugLogger(this);
         } catch(NoClassDefFoundError noClassDefFoundError) {
             //Let server know that plugin is not working yet and that it needs to be restarted
             getLogger().log(Level.WARNING, "DebugLib.jar either has not been downloaded or plugin has not been restarted!");
@@ -60,7 +61,7 @@ public class Main extends JavaPlugin
             getLogger().log(Level.SEVERE, String.valueOf(ex));
         }
 
-        if(sys.getHostname().equals("MS-7693")) logger.log("Plugin started!", DebugLevel.INFO);
+        if(sys.getHostname().equals("archlinux")) logger.log(DebugLevel.INFO, "Plugin started!");
 
         this.getCommand("create-locked").setExecutor(new CreateLocked());
         this.getCommand("create-locked").setTabCompleter(new CreateLockedTab());
@@ -92,7 +93,7 @@ public class Main extends JavaPlugin
             fileConfig.writeToFile(debugFile, "==================End==================");
         }
 
-        if(sys.getHostname().equals("MS-7693")) {
+        if(sys.getHostname().equals("archlinux")) {
             fileConfig.writeToYml(file, "development.debug", true);
         } else {
             fileConfig.writeToYml(file, "development.debug", false);
